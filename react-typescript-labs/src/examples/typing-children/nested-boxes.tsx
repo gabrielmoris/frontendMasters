@@ -1,17 +1,6 @@
-/**
- * Things you could try:
- *
- * JSX.Element;
- * JSX.Element | JSX.Element[];
- * React.ReactNode;
- * React.ReactChildren;
- * React.ReactChild[];
- */
+import type { PropsWithChildren } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type BoxProps = { children: any }; /* 👈 Get rid of this! 👆 */
-
-const Box = ({ children }: BoxProps) => {
+const Box = ({ children }: PropsWithChildren) => {
   return (
     <section className="m-4" style={{ padding: '1em', border: '5px solid purple' }}>
       {children}
