@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 // Info: I can use PropsWithChildren<otherprops> and would do a React.node & otherprops in background
-// Info: the real prop is ReactNode for the children, but PropsWithChildren makes the children OPTIONAL
+// Info: The prop is ReactNode for the children, but PropsWithChildren makes the children OPTIONAL
 
 const Box = ({ children }: PropsWithChildren) => {
   return (
