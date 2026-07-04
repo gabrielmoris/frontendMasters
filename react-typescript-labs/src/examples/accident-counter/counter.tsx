@@ -53,16 +53,8 @@ export const Counter = () => {
     <Card className="border-primary-500 flex w-2/3 flex-col items-center gap-8">
       <h1>Days Since the Last Accident</h1>
       <p className="text-6xl">{count.count}</p>
-      <CounterControls setCount={setCount} />
-      <CounterForm
-        layout="vertical"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          const count = Number(formData.get('count'));
-          dispatch({ type: 'set-count', payload: count });
-        }}
-      />
+      <CounterControls dispatch={dispatch} />
+      <CounterForm dispatch={dispatch} />
     </Card>
   );
 };
