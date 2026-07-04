@@ -1,20 +1,20 @@
 import { Card } from '$/common/components/card';
 import { useEffect, useState } from 'react';
 import { currentDate } from './utilities';
+import type { Post } from './types';
 
 type NewsArticleProps = {
   id: number;
 };
 
-const fetchArticle = async (id: number) => {
+// Fetch api returns defaultly Promise<any>. This can spread to the codebase. Better Type the returned ex[pected type on the function that makes the fetch.
+const fetchArticle = async (id: number): Promise<Post> => {
   const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
   return response.json();
 };
 
 export const NewsArticle = ({ id = 1 }: NewsArticleProps) => {
-  // Important: The type for article is any because the API returns.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [article, setArticle] = useState<any>(null);
+  const [article, setArticle] = useState<Post | null>(null);
 
   useEffect(() => {
     fetchArticle(id).then((data) => setArticle(data));
