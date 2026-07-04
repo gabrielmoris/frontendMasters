@@ -1,24 +1,31 @@
 import { Card } from '$/common/components/card';
-import { useEffect, useState } from 'react';
+import { use } from 'react';
 import { currentDate } from './utilities';
+import z from 'zod';
 import type { Post } from './types';
 
 type NewsArticleProps = {
   id: number;
 };
 
-// Fetch api returns defaultly Promise<any>. This can spread to the codebase. Better Type the returned ex[pected type on the function that makes the fetch.
-const fetchArticle = async (id: number): Promise<Post> => {
+const PostSchema = z.object({
+  id: z.coerce.number(),
+  title: z.string(),
+  body: z.string(),
+}) satisfies z.ZodType<Post>;
+
+// // I can also infer the type from zod schema instead of use the satisfies
+// type Post = z.infer<typeof PostSchema>;
+
+// Fetch api returns defaultly Promise<any>. This can spread to the codebase. Better Type the returned expected type on the function that makes the fetch or use Zod.
+const fetchArticle = async (id: number) => {
   const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-  return response.json();
+  const responseJson = response.json();
+  return PostSchema.parse(responseJson);
 };
 
 export const NewsArticle = ({ id = 1 }: NewsArticleProps) => {
-  const [article, setArticle] = useState<Post | null>(null);
-
-  useEffect(() => {
-    fetchArticle(id).then((data) => setArticle(data));
-  }, [id]);
+  const article = use(fetchArticle(id));
 
   return (
     <Card as="article" className="space-y-4 font-mono md:first:col-span-2">
