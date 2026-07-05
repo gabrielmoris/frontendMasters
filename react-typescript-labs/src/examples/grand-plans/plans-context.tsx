@@ -1,4 +1,4 @@
-import { createContext, useState, type PropsWithChildren } from 'react';
+import React, { createContext, useState, type PropsWithChildren } from 'react';
 import * as Api from './api';
 import type { Plan } from './types';
 
@@ -9,7 +9,25 @@ type PlansContextType = {
   removePlan: (id: number) => Promise<void>;
 };
 
-const PlansContext = createContext<PlansContextType | undefined>(undefined);
+// This is the practical way
+const PlansContext = createContext<PlansContextType | null>(null as unknown as PlansContextType);
+
+// // This is the Right way
+// const createBetterContext = <T,>() => {
+//   const Context = createContext<T | null>(null);
+
+//   const useContext = () => {
+//     const ctx = React.useContext(Context);
+
+//     if (ctx === null) {
+//       throw new Error('Context was not properly set!');
+//     }
+
+//     return ctx;
+//   };
+
+//   return [useContext, Context.Provider] as const;
+// };
 
 export const PlansProvider = ({ children }: PropsWithChildren) => {
   const [plans, setPlans] = useState<Plan[]>([]);
