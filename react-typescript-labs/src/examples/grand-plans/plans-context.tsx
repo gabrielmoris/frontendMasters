@@ -1,6 +1,7 @@
 import React, { createContext, useState, type PropsWithChildren } from 'react';
 import * as Api from './api';
 import type { Plan } from './types';
+import type { Todo } from '$/common/api';
 
 type PlansContextType = {
   plans: Plan[];
@@ -37,9 +38,7 @@ export const PlansProvider = ({ children }: PropsWithChildren) => {
     setPlans((prevPlans) => [...prevPlans, plan]);
   };
 
-  // Improvement: Can we type updatedPlan better?
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updatePlan = async (id: number, updatedPlan: any) => {
+  const updatePlan = async (id: number, updatedPlan: Omit<Partial<Todo>, 'id' | 'userId'>) => {
     const plan = await Api.updatePlan(id, updatedPlan);
     setPlans((prevPlans) => prevPlans.map((p) => (p.id === plan.id ? plan : p)));
   };
