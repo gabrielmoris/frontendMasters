@@ -1,0 +1,34 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+# Playwright
+test-results
+# SQLite
+*.db
+tmp/
+
+playwright-report/
+playwright/.authentication/
+
+# Local agent/editor settings — keep shared project config + skills, ignore personal overrides
+.claude/settings.local.json
