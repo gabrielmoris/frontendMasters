@@ -1,9 +1,9 @@
-import { expect, test } from '@playwright/test';
+import { expect, test as setup } from '@playwright/test';
 import path from 'node:path';
 
 const authenticationFile = path.resolve('playwright/.authentication/user.json');
 
-/*
+/* OTHER OPTIONS:
 I can also run:
  npm run build && npm run preview -- --host 127.0.0.1 --port 4173
 then, in a second terminal:
@@ -13,7 +13,7 @@ And To save the cookie:
  npx playwright codegen --save-storage ./playwright/.authentication/user-dev.json http://localhost:5173
 
 */
-test('Login into the application in a slow way (Not recommended).', async ({ page }) => {
+setup('Login into the application in a slow way (Not recommended).', async ({ page }) => {
 	await page.goto('/');
 
 	await page.getByRole('link', { name: 'Sign in' }).click();
