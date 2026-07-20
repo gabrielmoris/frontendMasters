@@ -9,7 +9,10 @@ export default defineConfig({
 		reuseExistingServer: true
 	},
 	use: {
-		baseURL: 'http://127.0.0.1:4173'
+		baseURL: 'http://127.0.0.1:4173',
+		trace: 'retain-on-failure',
+		screenshot: 'only-on-failure',
+		video: 'retain-on-failure'
 	},
 	projects: [
 		{ name: 'setup', testMatch: 'tests/auth.setup.ts' }, // Here is how I tell playwright to run a file which is not.spec.ts
