@@ -26,6 +26,6 @@ test('Intercept search', async ({ page }) => {
 	await page.getByRole('button', { name: 'Search' }).click();
 
 	await expect(
-		page.getByRole('heading', { name: 'Ensayo sobre la ceguera', exact: true })
+		page.getByRole('heading', { name: 'Ensayoss sobre la ceguera', exact: true })
 	).toBeVisible();
 });
