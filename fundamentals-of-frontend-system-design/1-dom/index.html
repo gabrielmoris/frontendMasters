@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Frontend System Design Fundamentals</title>
+    <link rel="stylesheet" href="./index.css" />
+    <!-- This template stores in memory a light representation of the component -->
+    <!-- It is not querryable by any DOM api nor rendered -->
+    <template id="card-template">
+      <article class="card">
+        <h3 class="card__title"></h3>
+        <div class="card__body">
+          <div class="card__body__image"></div>
+          <section class="card__body__content"></section>
+        </div>
+      </article>
+    </template>
+  </head>
+  <body>
+    <main id="container"></main>
+  </body>
+  <script>
+    const container = document.getElementById("container");
+    const template = document.getElementById("card-template");
+
+    /**
+     * @param {string} title
+     * @param {string} body
+     *
+     * @return {HTMLElement}
+     */
+    function createCardComponent(title, body) {
+      const card = template.content.cloneNode(true).firstElementChild;
+      const [cardTitle, cardBody] = card.querySelectorAll(".card__title, .card__body__content");
+
+      cardTitle.textContent = title;
+      cardBody.textContent = body;
+      return card;
+    }
+
+    const component = createCardComponent("Frontend System Design: Fundamentals", "This is a random body text");
+
+    container.appendChild(component);
+  </script>
+</html>
