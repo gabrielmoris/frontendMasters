@@ -51,6 +51,7 @@
         async ([entry]) => {
           if (entry.isIntersecting) {
             const data = await db.getPage(page++);
+            // [IMPORTANT PATTERN] I use a document fragment to accumulate DOM updates before appending to improve performance.
             const fragment = new DocumentFragment();
 
             for (const datum of data) {
