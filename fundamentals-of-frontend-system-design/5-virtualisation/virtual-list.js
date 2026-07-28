@@ -74,6 +74,8 @@ export class VirtualList {
     this.root = root;
     this.start = 0;
     this.end = 0;
+    this.limit = props.pageSize * 2;
+    this.pool = [];
   }
 
   /**
@@ -119,9 +121,9 @@ export class VirtualList {
   #handleIntersectionObserver(entries) {
     for (const entry of entries) {
       if (entry.isIntersecting) {
-        if (entry.target.id === "top-observer") {
+        if (entry.target.id === "top-observer" && this.start > 0) {
           this.#handleTopObserver();
-        } else {
+        } else if (entry.target.id === "bottom-observer") {
           this.#handleBottomObserver();
         }
       }
@@ -130,16 +132,37 @@ export class VirtualList {
 
   async #handleBottomObserver() {
     const data = await this.props.getPage(this.end++);
-    const list = getVirtualList();
-    const fragment = new DocumentFragment();
-    for (const datum of data) {
-      const card = this.props.getTemplate(datum);
-      fragment.appendChild(card);
+    const container = getContainer();
+    if (this.pool.length < this.limit) {
+      const list = getVirtualList();
+      const fragment = new DocumentFragment();
+      for (const datum of data) {
+        const card = this.props.getTemplate(datum);
+        fragment.appendChild(card);
+        this.pool.push(card);
+      }
+      list.appendChild(fragment);
+    } else {
+      // Switch the places bottom <=> top
+      const [toRecycle, unchanged] = [this.pool.slice(0, this.props.pageSize), this.pool.slice(this.props.pageSize)];
+
+      this.pool = unchanged.concat(toRecycle);
+      this.#updateData(toRecycle, data);
+      this.start++;
     }
-    list.appendChild(fragment);
+    this.#updateElementsPosition("down");
+    container.style.height = `${container.scrollHeight}px`;
   }
 
-  async #handleTopObserver() {}
+  async #handleTopObserver() {
+    this.start--;
+    this.end--;
+    const data = await this.props.getPage(this.start);
+    const [unchanged, toRecycle] = [this.pool.slice(0, this.props.pageSize), this.pool.slice(this.props.pageSize)];
+    this.pool = toRecycle.concat(unchanged);
+    this.#updateData(toRecycle, data);
+    this.#updateElementsPosition("top");
+  }
 
   /**
    * Function uses `props.getTemplate` to update the html elements
@@ -148,7 +171,11 @@ export class VirtualList {
    * @param elements {HTMLElement[]} - HTML Elements to update
    * @param data {T[]} - Data to use for update
    */
-  #updateData(elements, data) {}
+  #updateData(elements, data) {
+    for (let i = 0; i < data.length; i++) {
+      this.props.updateTemplate(data[i], elements[i]);
+    }
+  }
 
   /**
    * Move elements on the screen using CSS Transform
@@ -158,8 +185,31 @@ export class VirtualList {
   #updateElementsPosition(direction) {
     const [top, bottom] = getObservers();
     if (direction === "down") {
+      // Get the references from the previous and current elements
+      for (let i = 0; i < this.pool.length; i++) {
+        const [prev, curr] = [this.pool.at(i - 1), this.pool[i]];
+        if (y(prev) == null) {
+          y(curr, 0);
+        } else {
+          const newY = y(prev) + MARGIN * 2 + prev.getBoundingClientRect().height;
+          y(curr, newY);
+          curr.style.transform = translateY(newY);
+        }
+      }
     } else if (direction === "top") {
-      // To implement
+      for (let i = this.props.pageSize - 1; i >= 0; i--) {
+        const [curr, next] = [this.pool[i], this.pool[i + 1]];
+        const newY = y(next) - MARGIN * 2 - curr.getBoundingClientRect().height;
+        y(curr, newY);
+        curr.style.transform = translateY(newY);
+      }
     }
+
+    // Move Observers
+    const [first, last] = [this.pool[0], this.pool.at(-1)];
+    const topY = y(first);
+    const bottomY = y(last) + MARGIN * 2 + last.getBoundingClientRect().height;
+    top.style.transform = translateY(topY);
+    bottom.style.transform = translateY(bottomY);
   }
 }

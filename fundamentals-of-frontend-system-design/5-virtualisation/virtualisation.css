@@ -1,0 +1,10 @@
+.card {
+  position: absolute;
+  width: 100%;
+  /* Just to see how it animates */
+  transition: transform 1s;
+}
+
+#container {
+  position: relative;
+}
