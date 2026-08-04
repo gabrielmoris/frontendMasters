@@ -2,11 +2,25 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg: #0a0e17;
+  --bg-column: #10141e;
+  --bg-card: #171c28;
+  --bg-input: #10141e;
+  --border: #232838;
+  --border-strong: #2c3244;
+  --text: #f4f5f7;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --accent: #818cf8;
+  --accent-strong: #6366f1;
+}
+
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: #f5f5f5;
-  color: #222;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .app {
@@ -17,6 +31,9 @@ body {
 
 .app h1 {
   margin: 0 0 24px;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .new-issue {
@@ -27,23 +44,41 @@ body {
 
 .new-issue input {
   flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text);
   font-size: 14px;
+}
+
+.new-issue input::placeholder {
+  color: var(--text-dim);
+}
+
+.new-issue input:focus {
+  outline: none;
+  border-color: var(--border-strong);
 }
 
 .new-issue button {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #fff;
+  padding: 12px 20px;
+  border: 1px solid var(--accent-strong);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--accent);
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
 }
 
+.new-issue button:hover:not(:disabled) {
+  background: rgba(129, 140, 248, 0.1);
+}
+
 .new-issue button:disabled {
-  color: #aaa;
+  border-color: var(--border);
+  color: var(--text-dim);
   cursor: not-allowed;
 }
 
@@ -54,36 +89,45 @@ body {
 }
 
 .column {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  background: var(--bg-column);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 12px;
   min-height: 300px;
 }
 
 .column.over {
-  border-color: #3b82f6;
+  border-color: var(--accent-strong);
 }
 
 .column h2 {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
-  color: #666;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
   margin: 0 0 12px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .column h2 .count {
-  color: #999;
-  font-weight: normal;
+  background: var(--border);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  border-radius: 5px;
+  padding: 1px 7px;
 }
 
 .card {
-  background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 12px;
   margin-bottom: 8px;
   cursor: grab;
 }
@@ -94,20 +138,39 @@ body {
 
 .card .title {
   font-size: 14px;
-  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
 }
 
 .card select {
+  appearance: none;
   width: 100%;
-  font-size: 12px;
-  padding: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  font-size: 13px;
+  padding: 6px 28px 6px 10px;
+  border: 1px solid var(--accent-strong);
+  border-radius: 6px;
+  background-color: var(--bg-column);
+  color: var(--accent);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+}
+
+.card select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.card select option {
+  background: var(--bg-column);
+  color: var(--accent);
 }
 
 .empty {
   font-size: 13px;
-  color: #999;
+  color: var(--text-dim);
   text-align: center;
   padding: 24px 0;
 }
