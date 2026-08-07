@@ -1,5 +1,8 @@
 {
   "permissions": {
     "deny": ["Edit(package.json)"]
+  },
+  "hooks": {
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "echo 'oki!'", "statusMessage": "Running a hook!" }] }]
   }
 }

@@ -3,6 +3,7 @@ name: code-reviewer
 description: Review code the user shares and give a quick verdict of Good, Regular, or Bad. Use this whenever the user asks for a code review, asks Claude to review/check/rate their code, or pastes/uploads code and asks what Claude thinks of it. Make sure to trigger on phrases like "review my code," "what do you think of this code," "is this code good," "code review," or "rate this code," even if the user doesn't use those exact words.
 model: sonnet
 disable-model-invocation: true
+allowed-tools: [Bash(npm run:*)]
 ---
 
 # Code Review
