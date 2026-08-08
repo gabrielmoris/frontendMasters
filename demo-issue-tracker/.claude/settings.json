@@ -3,6 +3,18 @@
     "deny": ["Edit(package.json)"]
   },
   "hooks": {
-    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "echo 'oki!'", "statusMessage": "Running a hook!" }] }]
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "echo 'oki!'", "statusMessage": "Running a hook!" }] }],
+    "PreToolUse": [
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm run typecheck",
+            "statusMessage": "Checking types before commit..."
+          }
+        ]
+      }
+    ]
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "Issue Tracker Plugin",
+  "version": "1.0.0",
+  "description": "Enforce typecheck on commits and provide issue wrap-up automation",
+  "hooks": [
+    {
+      "name": "typecheck-gate",
+      "type": "bash-gate",
+      "command": "bash",
+      "args": [".claude-plugin/scripts/typecheck-gate.sh"]
+    }
+  ],
+  "commands": [
+    {
+      "name": "wrap-up",
+      "type": "agent",
+      "description": "Move an issue to Done and append a summary",
+      "agent": ".claude-plugin/agents/wrap-up.md"
+    }
+  ]
+}
